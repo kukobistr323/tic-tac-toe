@@ -17,7 +17,7 @@ public class Game {
     }
 
     public int getPlayerNumber() {
-        if (steps % 2 == 1)
+        if (steps % 2 == 0)
             return 1;
         else
             return 2;
@@ -29,7 +29,7 @@ public class Game {
     }
 
     public void newGame() {
-        steps = 0;
+        steps = 1;
         for (Enum<State>[] row : field)
             Arrays.fill(row, State.EMPTY);
     }

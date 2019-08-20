@@ -2,70 +2,65 @@ package by.bsu.menu;
 
 import by.bsu.exceptions.WrongInputException;
 import by.bsu.logic.*;
-
-import java.util.Scanner;
+import by.bsu.menu.type.GameType;
 
 public class Menu {
     private Game game;
     private Player player;
     private Bot bot;
     private Checker checker;
+    private GameReader reader;
+    private GameType type;
 
     public Menu(Game game) {
         this.game = game;
         player = new Player(game);
         bot = new Bot(game);
         checker = new Checker(game);
+        reader = new GameReader();
     }
 
     public void start() {
-        String type;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter s to play vs computer\n\tm to play vs opponent\n\tq to quit");
+        String command;
         do {
-            type = sc.next().toLowerCase();
-            if (type.equals("s"))
-                singleplay();
-            if (type.equals("m"))
-                multiplay();
+            System.out.println("Enter s to play vs computer\n\tm to play vs opponent\n\tq to quit");
+            command = reader.readPlayerValue();
+            if ("s".equals(command)) {
+                final int order = ((int) Math.random()) * 2 + 1;
+                type = () -> {
+                    if (game.getPlayerNumber() == order) {
+                        playerStep();
+                    } else {
+                        bot.step();
+                    }
+                };
+                play();
+            }
+            if ("m".equals(command)) {
+                type = () -> playerStep();
+                play();
+            }
             game.newGame();
-        } while (!type.equals("q"));
+        } while (!"q".equals(command));
     }
 
-    private void singleplay() {
-        int order = ((int) Math.random()) * 2 + 1;
-        String input;
-        Scanner sc = new Scanner(System.in);
-        if (order == 2) {
-            bot.step();
-        }
+
+    private void play() {
         while (!checker.isWin() && !checker.isDraw()) {
             System.out.println(Printer.stringField(game.getField()));
-            System.out.println("Enter position of your step: ");
-            try {
-                input = sc.next();
-                player.step(input);
-                bot.step();
-            } catch (WrongInputException ex) {
-                System.out.println(ex.getMessage());
-            }
+            type.putSymbol();
         }
         System.out.println(Printer.stringWin(checker));
     }
 
-    private void multiplay() {
-        String input;
-        Scanner sc = new Scanner(System.in);
-        while (!checker.isWin() && !checker.isDraw()) {
-            System.out.println(Printer.stringField(game.getField()));
+    private void playerStep() {
+        try {
+            String input;
             System.out.println("Enter position of your step: ");
-            try {
-                input = sc.next();
-                player.step(input);
-            } catch (WrongInputException ex) {
-                System.out.println(ex.getMessage());
-            }
+            input = reader.readPlayerValue();
+            player.step(input);
+        } catch (WrongInputException ex) {
+            System.out.println(ex.getMessage());
         }
-        System.out.println(Printer.stringWin(checker));
     }
 }
