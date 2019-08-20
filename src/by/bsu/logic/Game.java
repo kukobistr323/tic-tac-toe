@@ -1,22 +1,12 @@
 package by.bsu.logic;
 
-import by.bsu.logic.observer.Observer;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class Game implements Observer {
+public class Game {
     public static final int FIELD_SIZE = 3;
 
-    protected enum State {
-        X, O, EMPTY;
-
-        public static State getValue(int index) {
-            return State.values()[index];
-        }
-    }
-
-    ;
     protected Enum<State> field[][];
     protected int steps;
 
@@ -27,24 +17,21 @@ public abstract class Game implements Observer {
     }
 
     public int getPlayerNumber() {
-        if (steps % 2 == 0)
+        if (steps % 2 == 1)
             return 1;
         else
             return 2;
 
     }
 
-    @Override
-    public void newGame() {
-        steps = 1;
-        for (Enum<State>[] row : field)
-            Arrays.fill(row, State.EMPTY);
+    public void incrementSteps() {
+        steps++;
     }
 
-    @Override
-    public void observe(Indexes ind) {
-        steps++;
-        field[ind.getRow()][ind.getCol()] = getSymbol();
+    public void newGame() {
+        steps = 0;
+        for (Enum<State>[] row : field)
+            Arrays.fill(row, State.EMPTY);
     }
 
     public Enum<State>[][] getField() {

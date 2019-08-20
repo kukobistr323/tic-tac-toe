@@ -2,10 +2,21 @@ package by.bsu.logic;
 
 import by.bsu.exceptions.WrongInputException;
 
-public class Player extends Game {
+import static by.bsu.logic.Game.FIELD_SIZE;
 
-    public Indexes step(String input) throws WrongInputException {
+public class Player {
 
+    private Game game;
+
+    public Player() {
+    }
+
+    public Player(Game game) {
+        this.game = game;
+    }
+
+    public void step(String input) throws WrongInputException {
+        game.incrementSteps();
         if (!input.matches("^[1-9]$")) {
             throw new WrongInputException("Wrong position");
         }
@@ -13,7 +24,14 @@ public class Player extends Game {
         position--;
         int row = position / FIELD_SIZE;
         int col = position % FIELD_SIZE;
-        field[row][col] = State.getValue(steps % 2);
-        return new Indexes(row,col);
+        game.getField()[row][col] = State.getValue(game.getSteps() % 2);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

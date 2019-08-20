@@ -1,9 +1,20 @@
 package by.bsu.logic;
 
-public class Checker extends Game {
+import static by.bsu.logic.Game.FIELD_SIZE;
+
+public class Checker {
+
+    private Game game;
+
+    public Checker() {
+    }
+
+    public Checker(Game game) {
+        this.game = game;
+    }
 
     public boolean isDraw() {
-        return steps == FIELD_SIZE * FIELD_SIZE;
+        return game.getSteps() == FIELD_SIZE * FIELD_SIZE;
     }
 
     public boolean isWin() {
@@ -12,9 +23,9 @@ public class Checker extends Game {
 
     private boolean isWinHorizontal() {
         for (int i = 0; i < FIELD_SIZE; i++) {
-            boolean result = !State.EMPTY.equals(field[i][0]);
+            boolean result = State.EMPTY != game.getField()[i][0];
             for (int j = 1; j < FIELD_SIZE && result; j++)
-                result = field[i][j].equals(field[i][0]);
+                result = game.getField()[i][j] == game.getField()[i][0];
             if (result)
                 return true;
         }
@@ -23,9 +34,9 @@ public class Checker extends Game {
 
     private boolean isWinVertical() {
         for (int i = 0; i < FIELD_SIZE; i++) {
-            boolean result = !State.EMPTY.equals(field[0][i]);
+            boolean result = State.EMPTY != game.getField()[0][i];
             for (int j = 1; j < FIELD_SIZE && result; j++)
-                result = field[j][i].equals(field[0][i]);
+                result = game.getField()[j][i] == game.getField()[0][i];
             if (result)
                 return true;
         }
@@ -33,14 +44,22 @@ public class Checker extends Game {
     }
 
     private boolean isWinDiagonals() {
-        boolean result = !State.EMPTY.equals(field[0][0]);
+        boolean result = State.EMPTY != game.getField()[0][0];
         for (int i = 1; i < FIELD_SIZE && result; i++)
-            result = field[i][i].equals(field[0][0]);
+            result = game.getField()[i][i] == game.getField()[0][0];
         if (result)
             return true;
-        result = !State.EMPTY.equals(field[FIELD_SIZE - 1][0]);
+        result = State.EMPTY != game.getField()[FIELD_SIZE - 1][0];
         for (int i = 1; i < FIELD_SIZE && result; i++)
-            result = field[FIELD_SIZE - i - 1][i].equals(field[FIELD_SIZE - 1][0]);
+            result = game.getField()[FIELD_SIZE - i - 1][i] == game.getField()[FIELD_SIZE - 1][0];
         return result;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

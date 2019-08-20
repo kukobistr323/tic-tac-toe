@@ -1,17 +1,34 @@
 package by.bsu.logic;
 
-import by.bsu.logic.observer.Observer;
+import static by.bsu.logic.Game.FIELD_SIZE;
 
-public class Bot extends Game {
+public class Bot {
 
-    public Indexes step() {
+    private Game game;
+
+    public Bot() {
+    }
+
+    public Bot(Game game) {
+        this.game = game;
+    }
+
+    public void step() {
+        game.incrementSteps();
         int row = 0;
         int col = 0;
         do {
             row = (int) (Math.random() * FIELD_SIZE);
             col = (int) (Math.random() * FIELD_SIZE);
-        } while (!State.EMPTY.equals(field[row][col]));
-        field[row][col] = State.getValue(steps % 2);
-        return new Indexes(row, col);
+        } while (State.EMPTY!=game.getField()[row][col]);
+        game.getField()[row][col] = State.getValue(game.getSteps() % 2);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
