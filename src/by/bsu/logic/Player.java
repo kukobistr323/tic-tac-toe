@@ -16,7 +16,6 @@ public class Player {
     }
 
     public void step(String input) throws WrongInputException {
-        game.incrementSteps();
         if (!input.matches("^[1-9]$")) {
             throw new WrongInputException("Wrong position");
         }
@@ -25,6 +24,7 @@ public class Player {
         int row = position / FIELD_SIZE;
         int col = position % FIELD_SIZE;
         game.getField()[row][col] = State.getValue(game.getSteps() % 2);
+        game.incrementSteps();
     }
 
     public Game getGame() {

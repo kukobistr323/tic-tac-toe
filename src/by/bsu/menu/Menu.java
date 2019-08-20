@@ -2,7 +2,6 @@ package by.bsu.menu;
 
 import by.bsu.exceptions.WrongInputException;
 import by.bsu.logic.*;
-import by.bsu.menu.type.GameType;
 
 public class Menu {
     private Game game;

@@ -14,7 +14,7 @@ public class Checker {
     }
 
     public boolean isDraw() {
-        return game.getSteps() == FIELD_SIZE * FIELD_SIZE;
+        return game.getSteps() > FIELD_SIZE * FIELD_SIZE;
     }
 
     public boolean isWin() {
