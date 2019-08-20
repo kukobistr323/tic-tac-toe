@@ -1,5 +1,6 @@
 package by.bsu.logic;
 
+import by.bsu.exceptions.BusyCellException;
 import by.bsu.exceptions.WrongInputException;
 
 import static by.bsu.logic.Game.FIELD_SIZE;
@@ -15,7 +16,7 @@ public class Player {
         this.game = game;
     }
 
-    public void step(String input) throws WrongInputException {
+    public void step(String input) throws WrongInputException, BusyCellException {
         if (!input.matches("^[1-9]$")) {
             throw new WrongInputException("Wrong position");
         }
@@ -23,6 +24,9 @@ public class Player {
         position--;
         int row = position / FIELD_SIZE;
         int col = position % FIELD_SIZE;
+        if (game.getField()[row][col] != State.EMPTY) {
+            throw new BusyCellException("This cell is busy");
+        }
         game.getField()[row][col] = State.getValue(game.getSteps() % 2);
         game.incrementSteps();
     }

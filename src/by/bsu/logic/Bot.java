@@ -14,8 +14,8 @@ public class Bot {
     }
 
     public void step() {
-        int row = 0;
-        int col = 0;
+        int row;
+        int col;
         do {
             row = (int) (Math.random() * FIELD_SIZE);
             col = (int) (Math.random() * FIELD_SIZE);

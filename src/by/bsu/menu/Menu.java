@@ -1,5 +1,6 @@
 package by.bsu.menu;
 
+import by.bsu.exceptions.BusyCellException;
 import by.bsu.exceptions.WrongInputException;
 import by.bsu.logic.*;
 
@@ -59,6 +60,8 @@ public class Menu {
             input = reader.readPlayerValue();
             player.step(input);
         } catch (WrongInputException ex) {
+            System.out.println(ex.getMessage());
+        } catch (BusyCellException ex){
             System.out.println(ex.getMessage());
         }
     }
